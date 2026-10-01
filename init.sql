@@ -1,0 +1,13 @@
+SQL
+
+CREATE DATABASE IF NOT EXISTS sum4_db;
+USE sum4_db;
+
+CREATE TABLE IF NOT EXISTS alumnos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  asignatura VARCHAR(100) NOT NULL,
+  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  );
+
+INSERT INTO alumnos (nombre, asignatura) VALUES ('John Smith', 'DevOps_ISY2201');
