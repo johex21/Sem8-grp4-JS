@@ -1,13 +1,12 @@
-SQL
+-- Creamos una tabla de ejemplo
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
-CREATE DATABASE IF NOT EXISTS sum4_db;
-USE sum4_db;
+-- Insertamos datos de prueba en la tabla
+INSERT INTO users (username, email) VALUES ('john', 'john@hotmail.com');
+INSERT INTO users (username, email) VALUES ('max', 'max@gmail.com');
 
-CREATE TABLE IF NOT EXISTS alumnos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100) NOT NULL,
-  asignatura VARCHAR(100) NOT NULL,
-  creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
-
-INSERT INTO alumnos (nombre, asignatura) VALUES ('John Smith', 'DevOps_ISY2201');
