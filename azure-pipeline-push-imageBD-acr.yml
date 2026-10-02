@@ -1,0 +1,29 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  # Nombre del ACR
+  ACR_NAME: 'acrsem7g4js30142'
+  # Nombre que tendrá la imagen dentro del registro
+  IMAGE_NAME: 'mysql-devops'
+  # Nombre de la Service Connection de tipo Docker Registry
+  SERVICE_CONNECTION_NAME: 'sc-acr-devops'
+
+jobs:
+  - job: BuildAndPush
+    displayName: 'Compilar y Empujar Imagen MySQL a ACR'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - task: Docker@2
+        displayName: 'Build and Push Docker Image ACR'
+        inputs:
+          command: 'buildAndPush'
+          containerRegistry: '$(SERVICE_CONNECTION_NAME)'
+          repository: '$(IMAGE_NAME)'
+          dockerfile: '**/Dockerfile'
+          tags: |
+            latest
+            $(Build.BuildId)
