@@ -52,23 +52,23 @@ stages:
                 - script: |
                     # 3. Autenticación con Managed Identity y ejecución del contenedor
                     echo "Autenticando contra ACR mediante Managed Identity..."
-                    az acr login --name $(ACR_NAME)
+                    az acr login --name acrsem7g4js30142
 
                     echo "Limpiando contenedor previo si existe..."
                     docker rm -f mysql_container 2>/dev/null || true
 
                     echo "Descargando imagen..."
-                    docker pull \((ACR_NAME).azurecr.io/\)(IMAGE_NAME):latest
+                    docker pull acrsem7g4js30142.azurecr.io/mysql-devops:latest
 
                     echo "Iniciando contenedor MySQL..."
                     docker run -d \
                       --name mysql_container \
                       -p 3306:3306 \
                       --restart unless-stopped \
-                      \((ACR_NAME).azurecr.io/\)(IMAGE_NAME):latest
+                      acrsem7g4js30142.azurecr.io/mysql-devops:latest
                   displayName: 'Descargar y ejecutar la imagen Docker MySQL'
 
                 - script: |
-                    echo "El servicio MySQL está desplegado en la IP: $(VM_IP_PUBLICA):3306"
+                    echo "El servicio MySQL está desplegado en la IP: 20.25.249.138:3306"
                     docker ps --filter "name=mysql_container"
                   displayName: 'Mostrar estado del contenedor'
