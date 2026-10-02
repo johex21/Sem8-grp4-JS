@@ -1,0 +1,74 @@
+trigger:
+  branches:
+    include:
+      - main
+
+variables:
+  VM_IP_PUBLICA: '20.25.249.138'
+  IMAGE_NAME: 'mysql-devops'
+  ACR_NAME: 'acrsem7g4js30142'
+
+stages:
+  - stage: Deploy
+    displayName: 'Despliegue de MySQL en VM'
+    jobs:
+      - deployment: DeployToVM
+        displayName: 'Deploy to VM'
+        environment:
+          name: 'VMLinuxDocker'
+          resourceType: VirtualMachine
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    # 1. Verificar e instalar Azure CLI si no existe
+                    if ! command -v az &> /dev/null; then
+                      echo "Azure CLI no está instalado. Instalando..."
+                      sudo apt-get update && sudo apt-get install -y curl
+                      curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+                    else
+                      echo "Azure CLI ya está instalado."
+                    fi
+                  displayName: 'Verificar e Instalar Azure CLI'
+
+                - script: |
+                    # 2. Verificar e instalar Docker si no existe
+                    if ! command -v docker &> /dev/null; then
+                      echo "Docker no está instalado. Instalando..."
+                      sudo apt-get update
+                      sudo apt-get install -y ca-certificates curl gnupg lsb-release
+                      sudo mkdir -p /etc/apt/keyrings
+                      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+                      echo "deb [arch=\((dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu\)(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+                      sudo apt-get update
+                      sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+                      sudo usermod -aG docker $USER
+                    else
+                      echo "Docker ya está instalado."
+                    fi
+                  displayName: 'Verificar e Instalar Docker'
+
+                - script: |
+                    # 3. Autenticación con Managed Identity y ejecución del contenedor
+                    echo "Autenticando contra ACR mediante Managed Identity..."
+                    az acr login --name $(ACR_NAME)
+
+                    echo "Limpiando contenedor previo si existe..."
+                    docker rm -f mysql_container 2>/dev/null || true
+
+                    echo "Descargando imagen..."
+                    docker pull \((ACR_NAME).azurecr.io/\)(IMAGE_NAME):latest
+
+                    echo "Iniciando contenedor MySQL..."
+                    docker run -d \
+                      --name mysql_container \
+                      -p 3306:3306 \
+                      --restart unless-stopped \
+                      \((ACR_NAME).azurecr.io/\)(IMAGE_NAME):latest
+                  displayName: 'Descargar y ejecutar la imagen Docker MySQL'
+
+                - script: |
+                    echo "El servicio MySQL está desplegado en la IP: $(VM_IP_PUBLICA):3306"
+                    docker ps --filter "name=mysql_container"
+                  displayName: 'Mostrar estado del contenedor'
