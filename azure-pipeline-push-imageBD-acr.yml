@@ -9,7 +9,7 @@ variables:
   # Nombre que tendrá la imagen dentro del registro
   IMAGE_NAME: 'mysql-devops'
   # Nombre de la Service Connection de tipo Docker Registry
-  SERVICE_CONNECTION_NAME: 'sc-acr-devops'
+  SERVICE_CONNECTION_NAME: '$(SERVICE_CONNECTION_NAME)'
 
 jobs:
   - job: BuildAndPush
