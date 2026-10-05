@@ -4,9 +4,9 @@ trigger:
       - main
 
 variables:
-  VM_IP_PUBLICA: '20.25.249.138'
+  VM_IP_PUBLICA: $(VM_IP_PUBLICA)
   IMAGE_NAME: 'mysql-devops'
-  ACR_NAME: 'acrsem7g4js30142'
+  ACR_NAME: '$(ACR_NAME)'
 
 stages:
   - stage: Deploy
@@ -75,6 +75,6 @@ stages:
                     displayName: 'Descargar y ejecutar la imagen Docker MySQL'
 
                 - script: |
-                    echo "El servicio MySQL está desplegado en la IP: 20.25.249.138:3306"
+                    echo "El servicio MySQL está desplegado en la IP: $(VM_IP_PUBLICA):3306"
                     docker ps --filter "name=mysql_container"
                   displayName: 'Mostrar estado del contenedor'
