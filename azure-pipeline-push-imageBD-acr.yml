@@ -18,7 +18,7 @@ jobs:
         displayName: 'Build and Push Docker Image ACR'
         inputs:
           command: 'buildAndPush'
-          containerRegistry: '$(SERVICE_CONNECTION_NAME)'
+          containerRegistry: 'sc-acr-devops'
           repository: '$(IMAGE_NAME)'
           dockerfile: '**/Dockerfile'
           tags: |
