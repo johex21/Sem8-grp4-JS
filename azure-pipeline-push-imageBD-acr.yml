@@ -5,7 +5,7 @@ trigger:
 
 variables:
   # Nombre del ACR
-  ACR_NAME: 'acrsem7g4js30142'
+  ACR_NAME: '$(ACR_NAME)'
   # Nombre que tendrá la imagen dentro del registro
   IMAGE_NAME: 'mysql-devops'
   # Nombre de la Service Connection de tipo Docker Registry
