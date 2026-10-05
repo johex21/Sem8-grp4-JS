@@ -4,9 +4,8 @@ trigger:
       - main
 
 variables:
-  VM_IP_PUBLICA: $(VM_IP_PUBLICA)
   IMAGE_NAME: 'mysql-devops'
-  ACR_NAME: '$(ACR_NAME)'
+ 
 
 stages:
   - stage: Deploy
