@@ -19,7 +19,7 @@ jobs:
         inputs:
           command: 'buildAndPush'
           containerRegistry: '$(SERVICE_CONNECTION_NAME)'
-          repository: '$(ACR_NAME).azurecr.io/(IMAGE_NAME)'
+          repository: '\((ACR_NAME).azurecr.io/\)(IMAGE_NAME)'
           dockerfile: '**/Dockerfile'
           tags: |
             latest
