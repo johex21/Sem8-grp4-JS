@@ -69,9 +69,9 @@ stages:
                       $(ACR_NAME).azurecr.io/mysql-devops:latest
 
                       env:
-                    ROOT_PASS: $(MYSQL_ROOT_PASSWORD)
-                    DB_NAME: $(MYSQL_DATABASE)
-                    displayName: 'Descargar y ejecutar la imagen Docker MySQL'
+                        ROOT_PASS: $(MYSQL_ROOT_PASSWORD)
+                        DB_NAME: $(MYSQL_DATABASE)
+                      displayName: 'Descargar y ejecutar la imagen Docker MySQL'
 
                 - script: |
                     echo "El servicio MySQL está desplegado en la IP: $(VM_IP_PUBLICA):3306"
